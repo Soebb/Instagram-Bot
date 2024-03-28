@@ -1,7 +1,7 @@
 pyrogram==2.0.106
 tgcrypto
 python-dotenv
-https://github.com/Soebb/instaloader/archive/master.zip
+instaloader
 pyromod==1.4
 pytz
 get-video-properties
