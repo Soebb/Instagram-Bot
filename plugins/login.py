@@ -24,47 +24,15 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
 from config import Config
 from utils import *
-import os, time, pickle
+import os
 from instaloader import Profile, TwoFactorAuthRequiredException, BadCredentialsException
 from asyncio.exceptions import TimeoutError
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.wait import WebDriverWait
 
 USER=Config.USER
 passw=Config.PASSWORD
 STATUS=Config.STATUS
 OWNER=Config.OWNER
 HOME_TEXT=Config.HOME_TEXT
-
-insta = Config.L
-
-option = Options()
-option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
-option.add_argument("--no-sandbox") #bypass OS security model
-option.add_argument("--headless")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
-driver.get("https://www.instagram.com/")
- 
-#Find username input area and write username
-username = WebDriverWait(driver, timeout=60).until(
-    lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
-username.send_keys(USER)
- 
-#Find password input area and write password
-password = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
-password.send_keys(passw)
- 
-#Click on Login Button
-enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
-enter.click()
-time.sleep(5)
-
-pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 
 @Client.on_message(filters.command("login") & filters.private)
 async def login(bot, message):
@@ -92,6 +60,7 @@ async def login(bot, message):
 		)
         return
     username=USER
+    insta = Config.L
     if 1 in STATUS:
         m=await bot.send_message(message.from_user.id, "Fetching details from Instagram")
         profile = Profile.own_profile(insta.context)
