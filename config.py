@@ -1,8 +1,41 @@
-import os
+import os, pickle
 from instaloader import Instaloader
 from dotenv import load_dotenv
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
 
 load_dotenv()
+
+option = Options()
+option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
+option.add_argument("--no-sandbox") #bypass OS security model
+option.add_argument("--headless")
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
+driver.get("https://www.instagram.com/")
+ 
+#Find username input area and write username
+username = WebDriverWait(driver, timeout=60).until(
+    lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
+USER = os.environ.get("INSTAGRAM_USERNAME", "")
+username.send_keys(USER)
+ 
+#Find password input area and write password
+password = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
+PASSWORD = os.environ.get("PASSWORD", "")
+password.send_keys(PASSWORD)
+ 
+#Click on Login Button
+enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
+enter.click()
+
+pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
+cookies = pickle.load(open("cook.pkl", "rb"))
+insta = Instaloader().context.update_cookies(cookies)
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
@@ -14,7 +47,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=Instaloader()
+    L=insta    
     HELP="""
 You can Download almost anything From your Instagram Account.
 
