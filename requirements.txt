@@ -7,3 +7,5 @@ pytz
 get-video-properties
 ffmpeg-python
 browser_cookie3
+selenium
+webdriver_manager
