@@ -31,6 +31,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
 
 USER=Config.USER
 STATUS=Config.STATUS
@@ -43,7 +46,7 @@ option = Options()
 option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
-browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
 
 @Client.on_message(filters.command("login") & filters.private)
 async def login(bot, message):
@@ -96,8 +99,27 @@ async def login(bot, message):
             return
         passw=password.text
         break
-    
-    pickle.dump(browser.get_cookies(), open("cook.pkl", "wb"))
+    driver.get("https://www.instagram.com/")
+ 
+    #Find username input area and write username
+    username = WebDriverWait(driver, timeout=60).until(
+        lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
+    username.send_keys(USER)
+ 
+    #Find password input area and write password
+    password = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
+    password.send_keys(passw)
+ 
+    #Click on Login Button
+    enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
+    enter.click()
+    time.sleep(5)
+ 
+    #Click on Not Now in pop up
+    not_now = driver.find_element(By.CSS_SELECTOR, '._a9_1')
+    not_now.click()
+    time.sleep(5)
+    pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
     try:
         insta.login(username, passw)
         insta.save_session_to_file(filename=f"./{username}")
