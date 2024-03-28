@@ -25,7 +25,7 @@ from pyrogram import Client, filters
 from config import Config
 from utils import *
 import os
-from instaloader import instaloader, Profile, TwoFactorAuthRequiredException, BadCredentialsException
+from instaloader import Profile, TwoFactorAuthRequiredException, BadCredentialsException
 from asyncio.exceptions import TimeoutError
 
 USER=Config.USER
@@ -78,9 +78,9 @@ async def login(bot, message):
             photo=profilepic
             )
         return
-    usernam = instaloader.test_login()
+    usernam = insta.test_login()
     if usernam:
-        instaloader.context.username = username
+        insta.context.username = username
         return await message.reply_text("you logged in successfully")
     #elif not usernam:
         #raise SystemExit(f"Not logged in. Are you logged in successfully in Chrome?")
