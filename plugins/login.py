@@ -93,14 +93,6 @@ async def login(bot, message):
             )
         return
 
-    if not passw:
-        try:
-            password = await bot.ask(text = f"Helo {USER} Enter your Instagram Password to login into your account 🙈", chat_id=message.from_user.id, filters=filters.text, timeout=30)
-        except TimeoutError:
-            await bot.send_message(message.from_user.id, "Error!!\n\nRequest timed out.\nRestart by using /login")
-            return
-        passw=password.text
-
     driver.get("https://www.instagram.com/")
  
     #Find username input area and write username
