@@ -35,7 +35,9 @@ enter.click()
 
 pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 cookies = pickle.load(open("cook.pkl", "rb"))
-insta = Instaloader().context.update_cookies(cookies)
+print(cookies)
+insta = Instaloader()
+insta.context.update_cookies(cookies)
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
