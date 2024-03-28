@@ -88,7 +88,7 @@ async def login(bot, message):
         passw=password.text
         break
     try:
-        insta.login(username, passw, browser="Chrome")
+        insta.login(username, passw)
         insta.save_session_to_file(filename=f"./{username}")
         f=await bot.send_document(
             chat_id=message.from_user.id,
