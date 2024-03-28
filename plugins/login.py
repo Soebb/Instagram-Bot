@@ -114,11 +114,7 @@ async def login(bot, message):
     enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
     enter.click()
     time.sleep(5)
- 
-    #Click on Not Now in pop up
-    not_now = driver.find_element(By.CSS_SELECTOR, '._a9_1')
-    not_now.click()
-    time.sleep(5)
+
     pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
     try:
         insta.login(username, passw)
