@@ -24,9 +24,13 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
 from config import Config
 from utils import *
-import os
+import os, time, pickle
 from instaloader import Profile, TwoFactorAuthRequiredException, BadCredentialsException
 from asyncio.exceptions import TimeoutError
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 USER=Config.USER
 STATUS=Config.STATUS
@@ -35,6 +39,11 @@ HOME_TEXT=Config.HOME_TEXT
 
 insta = Config.L
 
+option = Options()
+option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
+option.add_argument("--no-sandbox") #bypass OS security model
+option.add_argument("--headless")
+browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
 
 @Client.on_message(filters.command("login") & filters.private)
 async def login(bot, message):
@@ -87,6 +96,8 @@ async def login(bot, message):
             return
         passw=password.text
         break
+    
+    pickle.dump(browser.get_cookies(), open("cook.pkl", "wb"))
     try:
         insta.login(username, passw)
         insta.save_session_to_file(filename=f"./{username}")
