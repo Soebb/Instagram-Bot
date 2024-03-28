@@ -36,7 +36,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
 USER=Config.USER
-PASS=Config.PASSWORD
+passw=Config.PASSWORD
 STATUS=Config.STATUS
 OWNER=Config.OWNER
 HOME_TEXT=Config.HOME_TEXT
@@ -93,8 +93,7 @@ async def login(bot, message):
             )
         return
 
-    """
-    while True:
+    if not passw:
         try:
             password = await bot.ask(text = f"Helo {USER} Enter your Instagram Password to login into your account 🙈", chat_id=message.from_user.id, filters=filters.text, timeout=30)
         except TimeoutError:
@@ -102,7 +101,6 @@ async def login(bot, message):
             return
         passw=password.text
         break
-    """
 
     driver.get("https://www.instagram.com/")
  
@@ -113,7 +111,7 @@ async def login(bot, message):
  
     #Find password input area and write password
     password = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
-    password.send_keys(PASS)
+    password.send_keys(passw)
  
     #Click on Login Button
     enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
