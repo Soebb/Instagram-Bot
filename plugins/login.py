@@ -100,7 +100,6 @@ async def login(bot, message):
             await bot.send_message(message.from_user.id, "Error!!\n\nRequest timed out.\nRestart by using /login")
             return
         passw=password.text
-        break
 
     driver.get("https://www.instagram.com/")
  
