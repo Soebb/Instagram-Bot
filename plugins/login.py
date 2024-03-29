@@ -78,10 +78,10 @@ async def login(bot, message):
             photo=profilepic
             )
         return
-    #usernam = insta.test_login()
-    #if usernam:
-        #insta.context.username = username
-        #return await message.reply_text("you logged in successfully")
+    usernam = insta.test_login()
+    if usernam:
+        insta.context.username = username
+        return await message.reply_text("you logged in successfully")
     #elif not usernam:
         #raise SystemExit(f"Not logged in. Are you logged in successfully in Chrome?")
 
