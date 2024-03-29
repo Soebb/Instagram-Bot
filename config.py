@@ -34,7 +34,7 @@ enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 
 pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
-driver.close()
+driver.quit()
 cookies = pickle.load(open("cook.pkl", "rb"))
 cookie = {}
 cookie["name"] = cookies[0].get("value")
