@@ -1,31 +1,23 @@
 import os, pickle
 from instaloader import Instaloader
 from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
+#from selenium.webdriver import Chrome
+#from selenium.webdriver.chrome.options import Options
+#from selenium.webdriver.chrome.service import Service as ChromeService
+#from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium_stealth import stealth
+from undetected_chromedriver import Chrome, ChromeOptions
+
 
 load_dotenv()
 
-option = Options()
+option = ChromeOptions()
 option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
-stealth(
-    driver,
-    languages=["en-US", "en"],
-    vendor="Google Inc",
-    platform="Linux64",
-    webgl_vendor="Intel Inc",
-    renderer="Intel Iris OpenGL Engine",
-    fix_hairline=True,
-)
+driver = Chrome(options=option)
 driver.get("https://www.instagram.com/")
  
 #Find username input area and write username
