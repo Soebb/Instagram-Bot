@@ -6,4 +6,4 @@ pyromod==1.4
 pytz
 get-video-properties
 ffmpeg-python
-from undetected_chromedriver
+undetected_chromedriver
