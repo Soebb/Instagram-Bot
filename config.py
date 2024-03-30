@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium_stealth import stealth
 
 load_dotenv()
 
@@ -16,6 +17,15 @@ option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location 
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=option)
+stealth(
+    driver,
+    languages=["en-US", "en"],
+    vendor="Google Inc",
+    platform="Linux64",
+    webgl_vendor="Intel Inc",
+    renderer="Intel Iris OpenGL Engine",
+    fix_hairline=True,
+)
 driver.get("https://www.instagram.com/")
  
 #Find username input area and write username
