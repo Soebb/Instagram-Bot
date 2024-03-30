@@ -8,3 +8,4 @@ get-video-properties
 ffmpeg-python
 selenium
 webdriver_manager
+selenium-stealth
