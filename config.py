@@ -20,10 +20,7 @@ from sqlite3 import OperationalError, connect
 
 
 def get_cookiefile():
-    default_cookiefile = {
-        "Windows": "~/AppData/Roaming/Mozilla/Firefox/Profiles/*/cookies.sqlite",
-        "Darwin": "~/Library/Application Support/Firefox/Profiles/*/cookies.sqlite",
-    }.get(system(), "~/.mozilla/firefox/*/cookies.sqlite")
+    default_cookiefile = "/usr/local/bin/firefox/*/cookies.sqlite"
     cookiefiles = glob(expanduser(default_cookiefile))
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
