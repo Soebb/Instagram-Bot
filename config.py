@@ -49,7 +49,7 @@ def import_session(cookiefile, sessionfile):
     print("Imported session cookie for {}.".format(username))
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
-
+    return instaloader
 
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
@@ -82,7 +82,7 @@ enter.click()
 
 #pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
-import_session(get_cookiefile(), USER)
+insta = import_session(get_cookiefile(), USER)
 #cookies = pickle.load(open("cook.pkl", "rb"))
 
 #cookie = {}
@@ -100,7 +100,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=Instaloader()
+    L=insta
     HELP="""
 You can Download almost anything From your Instagram Account.
 
