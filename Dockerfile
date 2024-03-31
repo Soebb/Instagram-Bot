@@ -13,4 +13,5 @@ RUN tar xjf firefox-125.0b6.tar.bz2 && sudo mv firefox /opt && sudo ln -s /opt/f
 
 RUN pip3 install -r requirements.txt
 EXPOSE 5000
+RUN whereis firefox
 CMD ["python3", "main.py"]
