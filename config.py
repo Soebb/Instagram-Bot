@@ -1,4 +1,4 @@
-import os, pickle
+import os, pickle, time
 from instaloader import Instaloader, ConnectionException
 from dotenv import load_dotenv
 #from selenium.webdriver import Chrome
@@ -62,7 +62,7 @@ option.add_argument("--headless")
 #driver = Chrome(options=option)
 #driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=option)
 driver = webdriver.Firefox(options=option)
-
+"""
 driver.get("https://www.instagram.com/")
  
 #Find username input area and write username
@@ -79,8 +79,14 @@ password.send_keys(PASSWORD)
 #Click on Login Button
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
-currentProfilePath = driver.capabilities["moz:profile"]
-print(currentProfilePath)
+"""
+#currentProfilePath = driver.capabilities["moz:profile"]
+from PIL import Image
+driver.get("about:support")
+time.sleep(1)
+driver.save_screenshot('image.png')
+image = Image.open('image.png')
+image.show()
 #pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
 #insta = import_session(get_cookiefile(), USER)
