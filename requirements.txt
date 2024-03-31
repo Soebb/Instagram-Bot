@@ -7,4 +7,4 @@ pytz
 get-video-properties
 ffmpeg-python
 selenium
-webdriver_manager
+geckodriver-autoinstaller
