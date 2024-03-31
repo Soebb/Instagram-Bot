@@ -50,6 +50,7 @@ cookies = pickle.load(open("cook.pkl", "rb"))
 print(cookies)
 cookie = {}
 cookie["name"] = cookies[0].get("value")
+print(cookie["name"])
 insta = Instaloader()
 insta.context.update_cookies(cookie)
 
