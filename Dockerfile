@@ -1,7 +1,7 @@
 FROM python:3.10-slim-bookworm
 ARG USER=root
 USER $USER
-#RUN python3 -m venv venv
+RUN python3 -m venv venv
 WORKDIR /app
 COPY . ./
 
