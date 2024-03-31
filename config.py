@@ -80,15 +80,15 @@ password.send_keys(PASSWORD)
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 
-pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
+#pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
-cookies = pickle.load(open("cook.pkl", "rb"))
-print(cookies)
-cookie = {}
-cookie["name"] = cookies[0].get("value")
-print(cookie["name"])
-insta = Instaloader()
-insta.context.update_cookies(cookie)
+import_session(get_cookiefile(), USER)
+#cookies = pickle.load(open("cook.pkl", "rb"))
+
+#cookie = {}
+#cookie["name"] = cookies[0].get("value")
+#insta = Instaloader()
+#insta.context.update_cookies(cookie)
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
@@ -100,7 +100,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=insta    
+    L=Instaloader()
     HELP="""
 You can Download almost anything From your Instagram Account.
 
