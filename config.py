@@ -2,22 +2,28 @@ import os, pickle
 from instaloader import Instaloader
 from dotenv import load_dotenv
 #from selenium.webdriver import Chrome
-#from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 #from selenium.webdriver.chrome.service import Service as ChromeService
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
-from undetected_chromedriver import Chrome, ChromeOptions
+#from undetected_chromedriver import Chrome, ChromeOptions
+# selenium 4
+from selenium import webdriver
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
 
 
 load_dotenv()
 
-option = ChromeOptions()
-option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
+option = Options()
+#option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
-driver = Chrome(options=option)
+#driver = Chrome(options=option)
+driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=option)
+
 driver.get("https://www.instagram.com/")
  
 #Find username input area and write username
