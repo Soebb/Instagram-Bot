@@ -17,8 +17,7 @@ from glob import glob
 from os.path import expanduser
 from platform import system
 from sqlite3 import OperationalError, connect
-dir = expanduser("~/.mozilla/firefox")
-print(os.listdir(dir))
+
 
 load_dotenv()
 
@@ -51,7 +50,7 @@ def import_session(cookiefile, sessionfile):
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
     return instaloader
-
+"""
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
 
@@ -80,17 +79,18 @@ password.send_keys(PASSWORD)
 #Click on Login Button
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
-
+currentProfilePath = driver.capabilities["moz:profile"]
+print(currentProfilePath)
 #pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
-insta = import_session(get_cookiefile(), USER)
+#insta = import_session(get_cookiefile(), USER)
 #cookies = pickle.load(open("cook.pkl", "rb"))
 
 #cookie = {}
 #cookie["name"] = cookies[0].get("value")
 #insta = Instaloader()
 #insta.context.update_cookies(cookie)
-"""
+
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
     API_HASH = os.environ.get("API_HASH", "")
