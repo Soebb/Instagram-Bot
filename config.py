@@ -11,9 +11,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 #from undetected_chromedriver import Chrome, ChromeOptions
 # selenium 4
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
+#from selenium.webdriver.firefox.service import Service as FirefoxService
+import geckodriver_autoinstaller
 
+
+geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
 load_dotenv()
 
@@ -22,7 +24,8 @@ option.binary_location = "/opt/firefox/firefox"    #chrome binary location speci
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 #driver = Chrome(options=option)
-driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=option)
+#driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=option)
+driver = webdriver.Firefox(options=option)
 
 driver.get("https://www.instagram.com/")
  
