@@ -5,7 +5,7 @@ USER $USER
 WORKDIR /app
 COPY . ./
 
-RUN apt-get update && apt-get -y install python3-pip ffmpeg wget sudo
+RUN apt-get update && apt-get -y install python3-pip ffmpeg wget sudo libgtkmm-3.0-1v5 libnotify4
 RUN wget https://ftp.mozilla.org/pub/firefox/releases/125.0b6/linux-x86_64/en-US/firefox-125.0b6.tar.bz2
 RUN tar xjf firefox-125.0b6.tar.bz2 && sudo mv firefox /opt && sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
 #RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
