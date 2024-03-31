@@ -18,7 +18,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 load_dotenv()
 
 option = Options()
-#option.binary_location = "/opt/google/chrome/chrome"    #chrome binary location specified here
+option.binary_location = "/opt/firefox/firefox"    #chrome binary location specified here
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 #driver = Chrome(options=option)
