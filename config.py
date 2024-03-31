@@ -47,6 +47,7 @@ enter.click()
 pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
 cookies = pickle.load(open("cook.pkl", "rb"))
+print(cookies)
 cookie = {}
 cookie["name"] = cookies[0].get("value")
 insta = Instaloader()
