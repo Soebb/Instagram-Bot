@@ -17,8 +17,12 @@ from glob import glob
 from os.path import expanduser
 from platform import system
 from sqlite3 import OperationalError, connect
+dir = expanduser("~/.mozilla/firefox")
+print(os.listdir(dir))
 
+load_dotenv()
 
+"""
 def get_cookiefile():
     default_cookiefile = "/usr/local/bin/firefox/*/cookies.sqlite"
     cookiefiles = glob(expanduser(default_cookiefile))
@@ -50,7 +54,7 @@ def import_session(cookiefile, sessionfile):
 
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
-load_dotenv()
+
 
 option = Options()
 option.binary_location = "/opt/firefox/firefox"    #chrome binary location specified here
@@ -86,7 +90,7 @@ insta = import_session(get_cookiefile(), USER)
 #cookie["name"] = cookies[0].get("value")
 #insta = Instaloader()
 #insta.context.update_cookies(cookie)
-
+"""
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
     API_HASH = os.environ.get("API_HASH", "")
@@ -97,7 +101,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=insta
+    L=Instaloader()
     HELP="""
 You can Download almost anything From your Instagram Account.
 
