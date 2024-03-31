@@ -5,6 +5,7 @@ USER $USER
 #RUN python3 -m venv venv
 WORKDIR /app
 COPY . ./
+RUN apt-get update && apt-get -y install snapd
 RUN snap remove firefox
 RUN add-apt-repository ppa:mozillateam/ppa
 RUN apt-get update && apt-get -y install python3 python3-pip ffmpeg firefox
