@@ -84,9 +84,8 @@ enter.click()
 from PIL import Image
 driver.get("about:support")
 time.sleep(1)
-driver.save_screenshot('image.png')
-image = Image.open('image.png')
-image.show()
+driver.save_screenshot('plugins/image.png')
+
 #pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
 #insta = import_session(get_cookiefile(), USER)
