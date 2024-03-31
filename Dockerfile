@@ -12,7 +12,7 @@ RUN tar xjf firefox-125.0b6.tar.bz2 && sudo mv firefox /opt && sudo ln -s /opt/f
 WORKDIR /app
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
-RUN cd /opt/firefox && find .
+RUN cd /opt/firefox/firefox && find .
 COPY . ./
 EXPOSE 5000
 CMD ["python3", "main.py"]
