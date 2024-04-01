@@ -70,7 +70,7 @@ password.send_keys(PASSWORD)
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 ProfilePath = driver.capabilities["moz:profile"]
-profileStoragePath = "/tmp/abc"
+profileStoragePath = "/tmp/cookis"
 shutil.copytree(ProfilePath, profileStoragePath,
     ignore_dangling_symlinks=True
 )
