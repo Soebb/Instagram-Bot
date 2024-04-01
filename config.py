@@ -14,7 +14,7 @@ load_dotenv()
 
 
 def get_cookiefile():
-    default_cookiefile = "../.mozilla/firefox/*/cookies.sqlite")
+    default_cookiefile = "../.mozilla/firefox/*/cookies.sqlite"
     cookiefiles = glob(default_cookiefile)
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
