@@ -8,4 +8,3 @@ get-video-properties
 ffmpeg-python
 selenium
 geckodriver-autoinstaller
-Pillow
