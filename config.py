@@ -81,7 +81,7 @@ enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 """
 #currentProfilePath = driver.capabilities["moz:profile"]
-from PIL import Image
+
 driver.get("about:support")
 time.sleep(1)
 driver.save_screenshot('plugins/image.png')
