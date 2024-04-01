@@ -12,6 +12,6 @@ WORKDIR /app
 COPY . ./
 RUN pip3 install -r requirements.txt
 EXPOSE 5000
-RUN chmod -R a+rwx /root/.mozilla
-RUN cd /root/.mozilla && ls -a -R
+RUN chmod -R a+rwx /root
+#RUN cd /root/.mozilla && ls -a -R
 CMD ["python3", "main.py"]
