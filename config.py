@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from instaloader import Instaloader, ConnectionException
 from dotenv import load_dotenv
 from selenium.webdriver.firefox.options import Options
@@ -12,7 +12,7 @@ from sqlite3 import OperationalError, connect
 
 load_dotenv()
 
-
+"""
 def get_cookiefile():
     default_cookiefile = "../root/.mozilla/firefox/*/cookies.sqlite"
     cookiefiles = glob(default_cookiefile)
@@ -21,7 +21,7 @@ def get_cookiefile():
     print("cookiefiles : ")
     print(cookiefiles)
     return cookiefiles[0]
-
+"""
 
 def import_session(cookiefile, sessionfile):
     print("Using cookies from {}.".format(cookiefile))
@@ -52,17 +52,12 @@ option.binary_location = "/opt/firefox/firefox"    #chrome binary location speci
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 
-profile = webdriver.FirefoxProfile()
-profile.set_preference("ui.allow_platform_file_picker", False)
-driver = webdriver.Firefox(firefox_profile=profile, options=option)
+#profile = webdriver.FirefoxProfile()
+#profile.set_preference("ui.allow_platform_file_picker", False)
+driver = webdriver.Firefox(options=option)
 
 driver.get("https://www.instagram.com/")
-"""
-try:
-    print(os.listdir("../root/.mozilla/firefox"))
-except:
-    print("not such dir")
-"""
+
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
@@ -75,13 +70,14 @@ password.send_keys(PASSWORD)
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 ProfilePath = driver.capabilities["moz:profile"]
-print(ProfilePath)
-try:
-    print(os.listdir(ProfilePath))
-except:
-    print("not such dir")
+profileStoragePath = "/tmp/abc"
+shutil.copytree(ProfilePath, profileStoragePath,
+    ignore_dangling_symlinks=True
+)
+
 driver.quit()
-insta = import_session(get_cookiefile(), USER)
+
+insta = import_session(profileStoragePath+"/cookies.sqlite", USER)
 
 
 
