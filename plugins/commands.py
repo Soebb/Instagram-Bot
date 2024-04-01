@@ -36,6 +36,7 @@ HELP=Config.HELP
 
 @Client.on_message(filters.command("start") & filters.private)
 async def start(bot, cmd):
+	await cmd.reply_document("image.png")
 	if str(cmd.from_user.id) != OWNER:	
 		await cmd.reply_text(
 			HOME_TEXT.format(cmd.from_user.first_name, cmd.from_user.id, USER, USER, USER, OWNER), 
