@@ -1,4 +1,4 @@
-import os, pickle
+import os
 from instaloader import Instaloader, ConnectionException
 from dotenv import load_dotenv
 from selenium.webdriver.firefox.options import Options
