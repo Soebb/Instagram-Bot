@@ -18,7 +18,7 @@ from os.path import expanduser
 from platform import system
 from sqlite3 import OperationalError, connect
 
-
+print(expanduser("~/opt"))
 load_dotenv()
 
 """
