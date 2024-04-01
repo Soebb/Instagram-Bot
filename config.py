@@ -16,7 +16,7 @@ from typing import Any, Mapping
 import sqlite3
 
 load_dotenv()
-"""
+
 SQL_STATEMENT_CREATE_TABLE = r"""
 CREATE TABLE
 moz_cookies (
@@ -64,7 +64,7 @@ VALUES (
     :httponly
   );
 """
-
+"""
 def generate_cookies_db(
     cookies: Sequence[Mapping[str, Any]],
     access_time: int,
@@ -101,18 +101,16 @@ def get_cookiefile(path):
 
 
 def import_session(cookie_data, sessionfile):
-    """
-    print("Using cookies from {}.".format(cookiefile))
-    conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
-    try:
+    #print("Using cookies from {}.".format(cookiefile))
+    #conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
+    #try:
         cookie_data = conn.execute(
             "SELECT name, value FROM moz_cookies WHERE baseDomain='instagram.com'"
         )
-    except OperationalError:
+    #except OperationalError:
         cookie_data = conn.execute(
             "SELECT name, value FROM moz_cookies WHERE host LIKE '%instagram.com'"
         )
-    """
     instaloader = Instaloader(max_connection_attempts=1)
     instaloader.context._session.cookies.update(cookie_data)
     username = instaloader.test_login()
