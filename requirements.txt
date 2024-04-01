@@ -6,5 +6,5 @@ pyromod==1.4
 pytz
 get-video-properties
 ffmpeg-python
-selenium
 geckodriver-autoinstaller
+selenium==4.9.0
