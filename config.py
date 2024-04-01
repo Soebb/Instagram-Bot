@@ -17,14 +17,16 @@ from glob import glob
 from os.path import expanduser
 from platform import system
 from sqlite3 import OperationalError, connect
+from collections.abc import Sequence
+from contextlib import closing
+from typing import Any, Mapping
+import sqlite3
 
-print(expanduser("~/opt"))
 load_dotenv()
 
-"""
-def get_cookiefile():
-    default_cookiefile = "/usr/local/bin/firefox/*/cookies.sqlite"
-    cookiefiles = glob(expanduser(default_cookiefile))
+
+def get_cookiefile(path):
+    cookiefiles = glob(expanduser(path))
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
     return cookiefiles[0]
@@ -50,19 +52,17 @@ def import_session(cookiefile, sessionfile):
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
     return instaloader
-"""
+
+
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
-
-
 
 option = Options()
 option.binary_location = "/opt/firefox/firefox"    #chrome binary location specified here
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
-#driver = Chrome(options=option)
-#driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=option)
+
 driver = webdriver.Firefox(options=option)
-"""
+
 driver.get("https://www.instagram.com/")
  
 #Find username input area and write username
@@ -79,22 +79,21 @@ password.send_keys(PASSWORD)
 #Click on Login Button
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
-"""
 #currentProfilePath = driver.capabilities["moz:profile"]
 
-driver.get("about:support")
-time.sleep(1)
-driver.save_screenshot('image.png')
+pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
+outpath = "./cookies.sqlite"
+with open("cook.pkl", "rb") as fp:
+    cookies = pickle.load(fp)
+    access_time_us = int(os.path.getmtime(cookies_path) * 1_000_000)
+    creation_time_us = int(os.path.getctime(cookies_path) * 1_000_000)
+    generate_cookies_db(
+        cookies, access_time_us, creation_time_us, outpath
+    )
 
-#pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
-#insta = import_session(get_cookiefile(), USER)
-#cookies = pickle.load(open("cook.pkl", "rb"))
+insta = import_session(get_cookiefile(outpath), USER)
 
-#cookie = {}
-#cookie["name"] = cookies[0].get("value")
-#insta = Instaloader()
-#insta.context.update_cookies(cookie)
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
@@ -106,7 +105,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=Instaloader()
+    L=insta
     HELP="""
 You can Download almost anything From your Instagram Account.
 
