@@ -1,21 +1,14 @@
-import os, pickle, time
+import os, pickle
 from instaloader import Instaloader, ConnectionException
 from dotenv import load_dotenv
-#from selenium.webdriver import Chrome
 from selenium.webdriver.firefox.options import Options
-#from selenium.webdriver.chrome.service import Service as ChromeService
-#from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
-#from undetected_chromedriver import Chrome, ChromeOptions
-# selenium 4
 from selenium import webdriver
-#from selenium.webdriver.firefox.service import Service as FirefoxService
 import geckodriver_autoinstaller
 from glob import glob
 from os.path import expanduser
-from platform import system
 from sqlite3 import OperationalError, connect
 from collections.abc import Sequence
 from contextlib import closing
@@ -136,29 +129,26 @@ option.add_argument("--headless")
 driver = webdriver.Firefox(options=option)
 
 driver.get("https://www.instagram.com/")
- 
-#Find username input area and write username
+
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
 username.send_keys(USER)
- 
-#Find password input area and write password
+
 password = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
 PASSWORD = os.environ.get("PASSWORD", "")
 password.send_keys(PASSWORD)
- 
-#Click on Login Button
+
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
-#currentProfilePath = driver.capabilities["moz:profile"]
 
-pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
+out_cook = "cook.pkl"
+pickle.dump(driver.get_cookies(), open(out_cook, "wb"))
 outpath = "./cookies.sqlite"
-with open("cook.pkl", "rb") as fp:
+with open(out_cook, "rb") as fp:
     cookies = pickle.load(fp)
-    access_time_us = int(os.path.getmtime(cookies_path) * 1_000_000)
-    creation_time_us = int(os.path.getctime(cookies_path) * 1_000_000)
+    access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
+    creation_time_us = int(os.path.getctime(out_cook) * 1_000_000)
     generate_cookies_db(
         cookies, access_time_us, creation_time_us, outpath
     )
