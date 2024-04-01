@@ -71,24 +71,24 @@ def generate_cookies_db(
     creation_time: int,
     db_path: str | os.PathLike,
 ) -> None:
-    with closing(sqlite3.connect(db_path)) as connection:
-        with closing(connection.cursor()) as cursor:
-            cursor.execute(SQL_STATEMENT_CREATE_TABLE)
-            for cookie in cookies:
-                values = {
-                    "access_time": access_time,
-                    "creation_time": creation_time,
-                    "domain": cookie.get("domain"),
-                    "expiry": cookie.get("expiry"),
-                    "httponly": cookie.get("httpOnly", False),
-                    "name": cookie["name"],
-                    "path": cookie.get("path"),
-                    "secure": cookie.get("secure", False),
-                    "value": cookie["value"],
-                }
-                cursor.execute(SQL_STATEMENT_INSERT_COOKIE, values)
-            return cursor
-        #connection.commit()
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
+    cursor.execute(SQL_STATEMENT_CREATE_TABLE)
+    for cookie in cookies:
+        values = {
+            "access_time": access_time,
+            "creation_time": creation_time,
+            "domain": cookie.get("domain"),
+            "expiry": cookie.get("expiry"),
+            "httponly": cookie.get("httpOnly", False),
+            "name": cookie["name"],
+            "path": cookie.get("path"),
+            "secure": cookie.get("secure", False),
+            "value": cookie["value"],
+        }
+        cursor.execute(SQL_STATEMENT_INSERT_COOKIE, values)
+    return cursor
+    #connection.commit()
 
 
 def get_cookiefile(path):
