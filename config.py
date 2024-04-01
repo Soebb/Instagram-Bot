@@ -24,6 +24,78 @@ import sqlite3
 
 load_dotenv()
 
+SQL_STATEMENT_CREATE_TABLE = r"""
+CREATE TABLE
+moz_cookies (
+    id INTEGER PRIMARY KEY,
+    originAttributes TEXT NOT NULL DEFAULT '',
+    name TEXT,
+    value TEXT,
+    host TEXT,
+    path TEXT,
+    expiry INTEGER,
+    lastAccessed INTEGER,
+    creationTime INTEGER,
+    isSecure INTEGER,
+    isHttpOnly INTEGER,
+    inBrowserElement INTEGER DEFAULT 0,
+    sameSite INTEGER DEFAULT 0,
+    rawSameSite INTEGER DEFAULT 0,
+    schemeMap INTEGER DEFAULT 0,
+    CONSTRAINT moz_uniqueid UNIQUE (name, host, path, originAttributes)
+)
+"""
+
+SQL_STATEMENT_INSERT_COOKIE = r"""
+INSERT INTO
+  moz_cookies (
+    name,
+    value,
+    host,
+    path,
+    expiry,
+    lastAccessed,
+    creationTime,
+    isSecure,
+    isHttpOnly
+  )
+VALUES (
+    :name,
+    :value,
+    :domain,
+    :path,
+    :expiry,
+    :access_time,
+    :creation_time,
+    :secure,
+    :httponly
+  );
+"""
+
+def generate_cookies_db(
+    cookies: Sequence[Mapping[str, Any]],
+    access_time: int,
+    creation_time: int,
+    db_path: str | os.PathLike,
+) -> None:
+    with closing(sqlite3.connect(db_path)) as connection:
+        with closing(connection.cursor()) as cursor:
+            cursor.execute(SQL_STATEMENT_CREATE_TABLE)
+            for cookie in cookies:
+                values = {
+                    "access_time": access_time,
+                    "creation_time": creation_time,
+                    "domain": cookie.get("domain"),
+                    "expiry": cookie.get("expiry"),
+                    "httponly": cookie.get("httpOnly", False),
+                    "name": cookie["name"],
+                    "path": cookie.get("path"),
+                    "secure": cookie.get("secure", False),
+                    "value": cookie["value"],
+                }
+                cursor.execute(SQL_STATEMENT_INSERT_COOKIE, values)
+        connection.commit()
+
 
 def get_cookiefile(path):
     cookiefiles = glob(expanduser(path))
