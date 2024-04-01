@@ -16,7 +16,7 @@ from typing import Any, Mapping
 import sqlite3
 
 load_dotenv()
-
+"""
 SQL_STATEMENT_CREATE_TABLE = r"""
 CREATE TABLE
 moz_cookies (
@@ -122,7 +122,7 @@ def import_session(cookie_data, sessionfile):
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
     return instaloader
-
+"""
 
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
@@ -132,9 +132,11 @@ option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 
 driver = webdriver.Firefox(options=option)
-
 driver.get("https://www.instagram.com/")
+driver.get("about:profiles")
+driver.save_screenshot("image.png")
 
+"""
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
@@ -159,7 +161,7 @@ data = generate_cookies_db(cookies, access_time_us, creation_time_us, outpath)
 driver.quit()
 insta = import_session(data, USER)
 
-
+"""
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
     API_HASH = os.environ.get("API_HASH", "")
@@ -170,7 +172,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=insta
+    L=Instaloader()
     HELP="""
 You can Download almost anything From your Instagram Account.
 
