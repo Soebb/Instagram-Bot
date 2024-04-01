@@ -84,7 +84,7 @@ enter.click()
 
 driver.get("about:support")
 time.sleep(1)
-driver.save_screenshot('plugins/image.png')
+driver.save_screenshot('image.png')
 
 #pickle.dump(driver.get_cookies(), open("cook.pkl", "wb"))
 driver.quit()
