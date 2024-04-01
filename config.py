@@ -57,11 +57,12 @@ profile.set_preference("ui.allow_platform_file_picker", False)
 driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
+"""
 try:
     print(os.listdir("../root/.mozilla/firefox"))
 except:
     print("not such dir")
-
+"""
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
@@ -73,10 +74,16 @@ password.send_keys(PASSWORD)
 
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
-
+ProfilePath = driver.capabilities["moz:profile"]
+print(ProfilePath)
+try:
+    print(os.listdir(ProfilePath))
+except:
+    print("not such dir")
+driver.quit()
 insta = import_session(get_cookiefile(), USER)
 
-driver.quit()
+
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
