@@ -11,5 +11,5 @@ WORKDIR /app
 COPY . ./
 RUN pip3 install -r requirements.txt
 EXPOSE 5000
-RUN cd /opt/firefox && ls -a
+RUN cd /opt/firefox && ls -a -R
 CMD ["python3", "main.py"]
