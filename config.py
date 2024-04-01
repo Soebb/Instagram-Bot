@@ -14,7 +14,7 @@ load_dotenv()
 
 
 def get_cookiefile():
-    default_cookiefile = "../.mozilla/firefox/*/cookies.sqlite"
+    default_cookiefile = "../root/.mozilla/firefox/*/cookies.sqlite"
     cookiefiles = glob(default_cookiefile)
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
@@ -58,7 +58,7 @@ driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
 try:
-    print(os.listdir("../.mozilla"))
+    print(os.listdir("../root/.mozilla"))
 except:
     print("not such dir")
 
