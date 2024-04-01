@@ -94,7 +94,8 @@ def get_cookiefile(path):
     cookiefiles = glob(expanduser(path))
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
-    print("cookiefiles : "+cookiefiles)
+    print("cookiefiles : ")
+    print(cookiefiles)
     return cookiefiles[0]
 
 
@@ -145,7 +146,7 @@ enter.click()
 
 out_cook = "cook.pkl"
 pickle.dump(driver.get_cookies(), open(out_cook, "wb"))
-outpath = "./cookies.sqlite"
+outpath = "./cookie.sqlite"
 with open(out_cook, "rb") as fp:
     cookies = pickle.load(fp)
     access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
