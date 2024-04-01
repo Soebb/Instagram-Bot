@@ -129,9 +129,11 @@ option.binary_location = "/opt/firefox/firefox"    #chrome binary location speci
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 
-driver = webdriver.Firefox(options=option)
+
 profile = webdriver.FirefoxProfile()
 profile.set_preference("ui.allow_platform_file_picker", False)
+driver = webdriver.Firefox(firefox_profile=profile, options=option)
+
 driver.get("https://www.instagram.com/")
 
 
