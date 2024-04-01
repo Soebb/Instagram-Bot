@@ -58,7 +58,7 @@ driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
 try:
-    print(os.listdir("../root/.mozilla"))
+    print(os.listdir("../root/.mozilla/firefox"))
 except:
     print("not such dir")
 
