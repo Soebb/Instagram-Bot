@@ -87,7 +87,8 @@ def generate_cookies_db(
                     "value": cookie["value"],
                 }
                 cursor.execute(SQL_STATEMENT_INSERT_COOKIE, values)
-        connection.commit()
+            return cursor
+        #connection.commit()
 
 
 def get_cookiefile(path):
@@ -99,7 +100,8 @@ def get_cookiefile(path):
     return cookiefiles[0]
 
 
-def import_session(cookiefile, sessionfile):
+def import_session(cookie_data, sessionfile):
+    """
     print("Using cookies from {}.".format(cookiefile))
     conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
     try:
@@ -110,6 +112,7 @@ def import_session(cookiefile, sessionfile):
         cookie_data = conn.execute(
             "SELECT name, value FROM moz_cookies WHERE host LIKE '%instagram.com'"
         )
+    """
     instaloader = Instaloader(max_connection_attempts=1)
     instaloader.context._session.cookies.update(cookie_data)
     username = instaloader.test_login()
@@ -147,16 +150,14 @@ enter.click()
 out_cook = "cook.pkl"
 pickle.dump(driver.get_cookies(), open(out_cook, "wb"))
 outpath = "./cook.sqlite"
-with open(out_cook, "rb") as fp:
-    cookies = pickle.load(fp)
-    access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
-    creation_time_us = int(os.path.getctime(out_cook) * 1_000_000)
-    generate_cookies_db(
-        cookies, access_time_us, creation_time_us, outpath
-    )
+
+cookies = pickle.load(open(out_cook, "rb"))
+access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
+creation_time_us = int(os.path.getctime(out_cook) * 1_000_000)
+data = generate_cookies_db(cookies, access_time_us, creation_time_us, outpath)
 
 driver.quit()
-insta = import_session(get_cookiefile(outpath), USER)
+insta = import_session(data, USER)
 
 
 class Config:
