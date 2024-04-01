@@ -130,9 +130,10 @@ option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 
 driver = webdriver.Firefox(options=option)
+profile = webdriver.FirefoxProfile()
+profile.set_preference("ui.allow_platform_file_picker", False)
 driver.get("https://www.instagram.com/")
-driver.get("about:profiles")
-driver.save_screenshot("image.png")
+
 
 """
 username = WebDriverWait(driver, timeout=60).until(
