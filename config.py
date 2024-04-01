@@ -94,6 +94,7 @@ def get_cookiefile(path):
     cookiefiles = glob(expanduser(path))
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
+    print("cookiefiles : "+cookiefiles)
     return cookiefiles[0]
 
 
