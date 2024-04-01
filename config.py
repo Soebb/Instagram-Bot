@@ -19,7 +19,7 @@ load_dotenv()
 
 SQL_STATEMENT_CREATE_TABLE = r"""
 CREATE TABLE
-moz_cookies (
+moz_cookie (
     id INTEGER PRIMARY KEY,
     originAttributes TEXT NOT NULL DEFAULT '',
     name TEXT,
@@ -41,7 +41,7 @@ moz_cookies (
 
 SQL_STATEMENT_INSERT_COOKIE = r"""
 INSERT INTO
-  moz_cookies (
+  moz_cookie (
     name,
     value,
     host,
