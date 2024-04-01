@@ -8,91 +8,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium import webdriver
 import geckodriver_autoinstaller
 from glob import glob
-from os.path import expanduser
-from sqlite3 import OperationalError, connect
-from collections.abc import Sequence
-from contextlib import closing
-from typing import Any, Mapping
-import sqlite3
 
 load_dotenv()
 
-SQL_STATEMENT_CREATE_TABLE = r"""
-CREATE TABLE
-moz_cookies (
-    id INTEGER PRIMARY KEY,
-    originAttributes TEXT NOT NULL DEFAULT '',
-    name TEXT,
-    value TEXT,
-    host TEXT,
-    path TEXT,
-    expiry INTEGER,
-    lastAccessed INTEGER,
-    creationTime INTEGER,
-    isSecure INTEGER,
-    isHttpOnly INTEGER,
-    inBrowserElement INTEGER DEFAULT 0,
-    sameSite INTEGER DEFAULT 0,
-    rawSameSite INTEGER DEFAULT 0,
-    schemeMap INTEGER DEFAULT 0,
-    CONSTRAINT moz_uniqueid UNIQUE (name, host, path, originAttributes)
-)
-"""
 
-SQL_STATEMENT_INSERT_COOKIE = r"""
-INSERT INTO
-  moz_cookies (
-    name,
-    value,
-    host,
-    path,
-    expiry,
-    lastAccessed,
-    creationTime,
-    isSecure,
-    isHttpOnly
-  )
-VALUES (
-    :name,
-    :value,
-    :domain,
-    :path,
-    :expiry,
-    :access_time,
-    :creation_time,
-    :secure,
-    :httponly
-  );
-"""
-"""
-def generate_cookies_db(
-    cookies: Sequence[Mapping[str, Any]],
-    access_time: int,
-    creation_time: int,
-    db_path: str | os.PathLike,
-) -> None:
-    connection = sqlite3.connect(db_path)
-    cursor = connection.cursor()
-    cursor.execute(SQL_STATEMENT_CREATE_TABLE)
-    for cookie in cookies:
-        values = {
-            "access_time": access_time,
-            "creation_time": creation_time,
-            "domain": cookie.get("domain"),
-            "expiry": cookie.get("expiry"),
-            "httponly": cookie.get("httpOnly", False),
-            "name": cookie["name"],
-            "path": cookie.get("path"),
-            "secure": cookie.get("secure", False),
-            "value": cookie["value"],
-        }
-        cursor.execute(SQL_STATEMENT_INSERT_COOKIE, values)
-    return cursor
-    #connection.commit()
-
-
-def get_cookiefile(path):
-    cookiefiles = glob(expanduser(path))
+def get_cookiefile():
+    cookiefiles = 
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
     print("cookiefiles : ")
@@ -100,14 +21,14 @@ def get_cookiefile(path):
     return cookiefiles[0]
 
 
-def import_session(cookie_data, sessionfile):
-    #print("Using cookies from {}.".format(cookiefile))
-    #conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
-    #try:
+def import_session(cookiefile, sessionfile):
+    print("Using cookies from {}.".format(cookiefile))
+    conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
+    try:
         cookie_data = conn.execute(
             "SELECT name, value FROM moz_cookies WHERE baseDomain='instagram.com'"
         )
-    #except OperationalError:
+    except OperationalError:
         cookie_data = conn.execute(
             "SELECT name, value FROM moz_cookies WHERE host LIKE '%instagram.com'"
         )
@@ -120,7 +41,7 @@ def import_session(cookie_data, sessionfile):
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
     return instaloader
-"""
+
 
 geckodriver_autoinstaller.install() # if it doesn't exist, download it automatically,
 
@@ -129,15 +50,12 @@ option.binary_location = "/opt/firefox/firefox"    #chrome binary location speci
 option.add_argument("--no-sandbox") #bypass OS security model
 option.add_argument("--headless")
 
-
 profile = webdriver.FirefoxProfile()
 profile.set_preference("ui.allow_platform_file_picker", False)
 driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
 
-print(os.listdir("../root"))
-"""
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
@@ -150,19 +68,11 @@ password.send_keys(PASSWORD)
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 
-out_cook = "cook.pkl"
-pickle.dump(driver.get_cookies(), open(out_cook, "wb"))
-outpath = "./cook.sqlite"
-
-cookies = pickle.load(open(out_cook, "rb"))
-access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
-creation_time_us = int(os.path.getctime(out_cook) * 1_000_000)
-data = generate_cookies_db(cookies, access_time_us, creation_time_us, outpath)
-
 driver.quit()
-insta = import_session(data, USER)
 
-"""
+insta = import_session(get_cookiefile(), USER)
+
+
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
     API_HASH = os.environ.get("API_HASH", "")
@@ -173,7 +83,7 @@ class Config:
     INSTA_SESSIONFILE_ID = os.environ.get("INSTA_SESSIONFILE_ID", None)
     S = "0"
     STATUS = set(int(x) for x in (S).split())
-    L=Instaloader()
+    L=insta
     HELP="""
 You can Download almost anything From your Instagram Account.
 
