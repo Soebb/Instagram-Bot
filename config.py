@@ -19,7 +19,7 @@ load_dotenv()
 
 SQL_STATEMENT_CREATE_TABLE = r"""
 CREATE TABLE
-moz_cookie (
+moz_cookies (
     id INTEGER PRIMARY KEY,
     originAttributes TEXT NOT NULL DEFAULT '',
     name TEXT,
@@ -41,7 +41,7 @@ moz_cookie (
 
 SQL_STATEMENT_INSERT_COOKIE = r"""
 INSERT INTO
-  moz_cookie (
+  moz_cookies (
     name,
     value,
     host,
@@ -146,7 +146,7 @@ enter.click()
 
 out_cook = "cook.pkl"
 pickle.dump(driver.get_cookies(), open(out_cook, "wb"))
-outpath = "./cookie.sqlite"
+outpath = "./cook.sqlite"
 with open(out_cook, "rb") as fp:
     cookies = pickle.load(fp)
     access_time_us = int(os.path.getmtime(out_cook) * 1_000_000)
