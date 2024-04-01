@@ -136,7 +136,7 @@ driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
 
-print(os.listdir(".."))
+print(os.listdir("../root"))
 """
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
