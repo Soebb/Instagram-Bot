@@ -70,10 +70,9 @@ password.send_keys(PASSWORD)
 enter = driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
 enter.click()
 
-driver.quit()
-
 insta = import_session(get_cookiefile(), USER)
 
+driver.quit()
 
 class Config:
     API_ID = int(os.environ.get("API_ID", ""))
