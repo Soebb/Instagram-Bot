@@ -57,7 +57,11 @@ profile.set_preference("ui.allow_platform_file_picker", False)
 driver = webdriver.Firefox(firefox_profile=profile, options=option)
 
 driver.get("https://www.instagram.com/")
-print(os.listdir("../.mozilla/firefox"))
+try:
+    print(os.listdir("../.mozilla"))
+except:
+    print("not such dir")
+
 username = WebDriverWait(driver, timeout=60).until(
     lambda d: d.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input'))
 USER = os.environ.get("INSTAGRAM_USERNAME", "")
