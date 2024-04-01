@@ -8,12 +8,14 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium import webdriver
 import geckodriver_autoinstaller
 from glob import glob
+from sqlite3 import OperationalError, connect
 
 load_dotenv()
 
 
 def get_cookiefile():
-    cookiefiles = 
+    default_cookiefile = "../.mozilla/firefox/*/cookies.sqlite")
+    cookiefiles = glob(default_cookiefile)
     if not cookiefiles:
         raise SystemExit("No Firefox cookies.sqlite file found. Use -c COOKIEFILE.")
     print("cookiefiles : ")
